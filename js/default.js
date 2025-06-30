@@ -144,7 +144,10 @@ require('tabState/windowSync.js').initialize()
 require('windowControls.js').initialize()
 require('navbar/menuButton.js').initialize()
 
+require('aiSidebar.js').initialize()
+
 require('navbar/addTabButton.js').initialize()
+require('navbar/aiSidebarToggleButton.js').initialize()
 require('navbar/tabContextMenu.js').initialize()
 require('navbar/tabActivity.js').initialize()
 require('navbar/tabColor.js').initialize()

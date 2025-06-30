@@ -1,0 +1,53 @@
+/* AI Chat Tabs
+   Basic styling for conversation tab strip inside the AI sidebar.
+*/
+
+#ai-chat-tabs {
+  display: flex;
+  align-items: center;
+  height: 34px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--theme-background-color, #ffffff);
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+#ai-chat-tabs::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+#ai-chat-tabs .chat-tab {
+  padding: 6px 12px;
+  flex: 0 0 auto;
+  font-size: 13px;
+  line-height: 20px;
+  color: var(--theme-text-color, #ffffff);
+  cursor: pointer;
+  user-select: none;
+  border-right: 1px solid rgba(0, 0, 0, 0.05);
+  transition: background 0.15s ease;
+}
+
+#ai-chat-tabs .chat-tab:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+#ai-chat-tabs .chat-tab.active {
+  font-weight: 600;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+#ai-chat-tabs .chat-tab .close-btn {
+  margin-left: 6px;
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+
+#ai-chat-tabs .chat-tab:hover .close-btn {
+  opacity: 0.6;
+}
+
+#ai-chat-tabs .chat-tab .close-btn:hover {
+  opacity: 1;
+} 

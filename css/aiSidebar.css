@@ -1,0 +1,40 @@
+#ai-sidebar {
+  position: fixed;
+  top: 36px; /* navbar height */
+  right: 0;
+  width: 320px;
+  bottom: 0;
+  background: var(--theme-background-color, #ffffff);
+  border-left: 1px solid rgba(0,0,0,0.1);
+  z-index: 3;
+  display: none; /* toggled via class */
+  overflow: auto;
+  transform: translateX(100%);
+  transition: transform 160ms cubic-bezier(.25,.8,.4,1);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #ai-sidebar {
+    transition: none;
+  }
+}
+
+body.ai-sidebar-open #ai-sidebar {
+  display: block;
+  transform: translateX(0);
+}
+
+/* resize handle */
+#ai-sidebar-resize-handle {
+  position: absolute;
+  left: -5px; /* center the handle on the border */
+  top: 0;
+  width: 10px; /* increase hover/drag area */
+  height: 100%;
+  cursor: col-resize;
+  z-index: 1;
+}
+#ai-sidebar-resize-handle:hover {
+  background: rgba(0,0,0,0.05);
+} 

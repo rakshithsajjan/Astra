@@ -23,6 +23,20 @@ db.version(1).stores({
   readingList: 'url, time, visitCount, pageHTML, article, extraData' // TODO remove this (reading list is no longer used)
 })
 
+// Version 2 — 2025-06-29
+// Adds aiChat table for storing chat messages from the AI sidebar.
+// Schema: auto-incrementing id, reference to conversation, message role (user/assistant/system), message content, and timestamp
+db.version(2).stores({
+  aiChat: '++id, conversationId, role, timestamp'
+})
+
+// Version 3 — 2025-06-29
+// Adds aiConversations table for storing metadata about chat conversations.
+// Schema: auto id, name (string), created (timestamp), lastActive (timestamp)
+db.version(3).stores({
+  aiConversations: '++id, name, created, lastActive'
+})
+
 db.open().then(function () {
   console.log('database opened ', performance.now())
 }).catch(function (error) {

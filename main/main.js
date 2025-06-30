@@ -67,6 +67,8 @@ var userDataPath = app.getPath('userData')
 
 settings.initialize(userDataPath)
 
+aiChatAPI.initialize()
+
 if (settings.get('userSelectedLanguage')) {
   app.commandLine.appendSwitch('lang', settings.get('userSelectedLanguage'))
 }

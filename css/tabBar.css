@@ -311,6 +311,11 @@ body.windows.dark-theme .navbar-action-button:not(:disabled):hover {
   font-size: 1.6em !important;
 }
 
+/* Ensure equal spacing for AI sidebar toggle button */
+.navbar-right-actions #ai-sidebar-toggle-button {
+  padding-right: 0.5em;
+}
+
 /* audio button */
 .tab-item .tab-audio-button {
   vertical-align: text-bottom;

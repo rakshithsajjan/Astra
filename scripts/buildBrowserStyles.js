@@ -11,6 +11,8 @@ const modules = [
   'css/tabEditor.css',
   'css/taskOverlay.css',
   'css/webviews.css',
+  'css/aiSidebar.css',
+  'css/aiChat.css',
   'css/newTabPage.css',
   'css/searchbar.css',
   'css/listItem.css',

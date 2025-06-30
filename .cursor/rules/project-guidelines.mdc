@@ -1,0 +1,21 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Development Rules
+
+1. **DeepWiki First**  
+   Whenever you need clarification about the original Min repository—or any public GitHub codebase—consult DeepWiki MCP before doing anything else.
+
+2. **Record Learnings Promptly**  
+   After a failure is diagnosed and fixed, add the takeaway to [learnings.md](mdc:md/learnings.md) so that future work benefits from past insights.
+
+3. **Follow the Master Plan**  
+   Treat [main.md](mdc:md/main.md) as the authoritative roadmap. Review it at the start of every new feature and implement changes in a controlled, step-by-step manner.
+
+4. **Track Progress Transparently**  
+   Keep an up-to-date TODO list and progress log in [progress.md](mdc:md/progress.md) using straightforward Markdown checklists.
+
+5. **Document Repository Understandings**  
+   When you develop a high-level understanding of the repository structure or key logic flows, write a concise summary to [understood.md](mdc:md/understood.md) so future work can start from that shared knowledge base.
