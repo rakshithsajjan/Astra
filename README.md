@@ -1,5 +1,5 @@
 # Min
-
+hello
 Min is a fast, minimal browser that protects your privacy. It includes an interface designed to minimize distractions, and features such as:
 
 - Full-text search for visited pages
