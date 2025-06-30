@@ -2,14 +2,29 @@
    Basic styling for conversation tab strip inside the AI sidebar.
 */
 
-#ai-chat-tabs {
+#ai-chat-toolbar {
   display: flex;
   align-items: center;
   height: 34px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: var(--theme-background-color, #ffffff);
+}
+body.dark-mode #ai-chat-toolbar {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+  background: var(--theme-background-color, rgb(33, 37, 43));
+}
+
+#ai-chat-tabs {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-wrap: nowrap;
+  white-space: nowrap;
   overflow-x: auto;
   scrollbar-width: none; /* Firefox */
+  border-bottom: none; /* inherit from toolbar */
+  background: transparent;
 }
 
 #ai-chat-tabs::-webkit-scrollbar {
@@ -19,6 +34,8 @@
 #ai-chat-tabs .chat-tab {
   padding: 6px 12px;
   flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
   font-size: 13px;
   line-height: 20px;
   color: var(--theme-text-color, #ffffff);
@@ -50,4 +67,65 @@
 
 #ai-chat-tabs .chat-tab .close-btn:hover {
   opacity: 1;
+}
+
+#ai-chat-toolbar .ai-chat-toolbar-btn {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--theme-text-color, #000);
+  cursor: pointer;
+}
+body.dark-mode #ai-chat-toolbar .ai-chat-toolbar-btn {
+  color: var(--theme-text-color, lightgrey);
+}
+
+#ai-chat-toolbar .ai-chat-toolbar-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+body.dark-mode #ai-chat-toolbar .ai-chat-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+#ai-chat-toolbar .ai-chat-toolbar-btn .i {
+  font-size: 18px;
+}
+
+#ai-chat-history-popover {
+  position: absolute;
+  background: var(--theme-background-color, #ffffff);
+  color: var(--theme-text-color, #000);
+  border: 1px solid rgba(0,0,0,0.15);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  max-height: 160px; /* roughly 5 items * 32px */
+  overflow-y: auto;
+  min-width: 160px;
+  z-index: 9999;
+}
+body.dark-mode #ai-chat-history-popover {
+  background: rgb(33,37,43);
+  color: lightgrey;
+  border-color: rgba(255,255,255,0.2);
+}
+
+#ai-chat-history-popover .history-item {
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#ai-chat-history-popover .history-item:hover {
+  background: rgba(0,0,0,0.05);
+}
+body.dark-mode #ai-chat-history-popover .history-item:hover {
+  background: rgba(255,255,255,0.07);
 } 

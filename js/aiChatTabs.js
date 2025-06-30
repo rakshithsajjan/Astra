@@ -54,7 +54,13 @@ function closeTab (tab) {
   const isActive = tab.classList.contains('active')
   const next = tab.nextElementSibling || tab.previousElementSibling
   tab.remove()
+  const id = tabMap.get(tab)
   tabMap.delete(tab)
+  // Remove from IndexedDB
+  if (id && db && db.aiConversations) {
+    db.aiConversations.delete(id).catch(() => {})
+    db.aiChat && db.aiChat.where('conversationId').equals(id).delete().catch(() => {})
+  }
   if (isActive && next) {
     activateTab(next)
   }
@@ -70,7 +76,7 @@ async function render (toolbarEl) {
   // Load existing conversations
   let convRows = []
   if (db && db.aiConversations) {
-    try { convRows = await db.aiConversations.orderBy('created').toArray() } catch (e) {}
+    try { convRows = await db.aiConversations.orderBy('lastActive').reverse().toArray() } catch (e) {}
   }
 
   if (convRows.length === 0) {

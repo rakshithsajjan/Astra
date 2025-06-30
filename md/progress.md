@@ -28,15 +28,13 @@ Progressive mini-tasks so each slice is testable:
 - [x] Typing caret while streaming.
 
 ### Conversation Persistence
-- [ ] Schema bump to Dexie `version(2)` adding `aiChat` table.
-- [ ] Load history on sidebar open; append new rows after each message.
-- [ ] `/clear` command deletes history for current conversation.
-- [ ] add a history icon inside the sidebar where the user cam access past chats.
+- [x] Schema bump to Dexie `version(2)` adding `aiChat` table.
+- [x] Load history on sidebar open; append new rows after each message.
+- [x] add a history icon inside the sidebar where the user cam access past chats (UI only).
 
 ### Conversation Tabs within Sidebar
-- [ ] UI tab-strip component inside sidebar (`aiChatTabs.js`).
-- [ ] Shortcuts: ⌘T new convo, ⌘W close convo.
-- [ ] IndexedDB `aiConversations` table `{id,name,created,lastActive}`.
+- [x] UI tab-strip component inside sidebar (`aiChatTabs.js`).
+- [x] IndexedDB `aiConversations` table `{id,name,created,lastActive}` (tabs persist across sessions).
 
 ### Context Tagging
 - [ ] Implement drag-drop of browser tab onto chat pane to attach context.

@@ -13,6 +13,7 @@ const modules = [
   'css/webviews.css',
   'css/aiSidebar.css',
   'css/aiChat.css',
+  'css/aiChatTabs.css',
   'css/newTabPage.css',
   'css/searchbar.css',
   'css/listItem.css',
