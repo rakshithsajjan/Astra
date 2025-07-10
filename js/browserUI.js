@@ -58,6 +58,18 @@ function addTab (tabId = tabs.add(), options = {}) {
   }
 }
 
+/* Expose a function to get all tab data via IPC from the main process */
+window.getMinTabInfo = async function() {
+  try {
+    const tabData = await ipc.invoke('get-all-tabs-data');
+    console.log('Min Tab Data:', tabData);
+    return tabData;
+  } catch (error) {
+    console.error('Error fetching Min tab data:', error);
+    return null;
+  }
+};
+
 function moveTabLeft (tabId = tabs.getSelected()) {
   tabs.moveBy(tabId, -1)
   tabBar.updateAll()

@@ -116,6 +116,60 @@
 - Eval set for AI performance
 - Coverage target: 60%
 
+### Playwright E2E Testing
+Playwright has been successfully configured to launch the Min browser and interact with its pages, enabling robust end-to-end testing and laying the groundwork for autonomous browsing.
+
+**How Programmatic Access Was Achieved: A Detailed Journey**
+
+The path to achieving comprehensive programmatic control over Min, including access to its internal tab and task management, involved several iterations of research, testing, and problem-solving. The primary goal was to move beyond simple user input simulation to direct interaction with the browser's underlying state.
+
+**1. Initial Playwright Setup and Connection Attempts:**
+
+   The first step involved installing Playwright (`npm install playwright`) and attempting to connect to a running Min instance. Initial attempts utilized `chromium.connectOverCDP` with the `--remote-debugging-port` flag. However, consistent `ECONNREFUSED` errors indicated that the CDP port was either not being exposed correctly or was inaccessible.
+
+   *Initial Hypothesis:* The `npm run startElectron` command, which runs a built version of the main process, might not have been correctly applying the `--remote-debugging-port` flag, or there were timing issues during application startup.
+
+   *Solution:* To ensure Playwright had full control over the launch process and the debugging port, the strategy shifted to using Playwright's `_electron.launch` method. This method directly launches the Electron application and allows for precise control over command-line arguments, guaranteeing the `--remote-debugging-port=9222` flag was applied.
+
+**2. Discovering and Accessing Internal State (`window.tasks.getCopyableState()`):**
+
+   A critical requirement was to obtain a real-time overview of all open tabs and their associated tasks. The initial roadmap from the OpenAI LLM suggested `window.getMinTabInfo()` which internally uses `ipc.invoke('get-all-tabs-data')`. However, direct calls to `window.getMinTabInfo()` from Playwright's `appWindow.evaluate()` consistently returned `null` or `undefined`.
+
+   *Problem Diagnosis:* Extensive logging within both the renderer process (`js/browserUI.js`) and the main process (`main/main.js`) revealed that the `ipc.invoke` call from the renderer was not reliably hitting the `ipc.handle` in the main process when initiated from Playwright's `evaluate` context. This indicated a sandboxing or context isolation issue within Playwright's `evaluate` environment, preventing direct access to certain global objects or proper IPC mechanisms.
+
+   *Breakthrough Solution:* Instead of relying on the problematic `window.getMinTabInfo()` (which uses IPC), it was discovered that the `window.tasks` global object in the renderer process directly holds the tab and task state. This object has a `getCopyableState()` method that returns a serializable JSON representation of all tasks and tabs. By using `appWindow.evaluate(() => window.tasks.getCopyableState())`, and crucially, waiting for `window.tasks` to be defined using `appWindow.waitForFunction('window.tasks !== undefined')`, reliable programmatic access to the browser's full tab and task overview was achieved.
+
+**3. Programmatic Tab Navigation and Switching (Overcoming Sandboxing):**
+
+   With direct internal function calls (`window.webviews.update()`, `window.browserUI.addTab()`) also failing due to the `evaluate` sandboxing, a more robust approach was needed for tab navigation and switching.
+
+   *Solution for Navigation:* Instead of directly manipulating the webview, navigation was achieved by simulating user input into the application's searchbar (`#tab-editor-input`). By typing the desired URL into this input field and simulating an 'Enter' key press, the application's native navigation logic was triggered, successfully loading the URL in the active tab.
+
+   *Solution for Tab Switching:* Similarly, programmatic tab switching was implemented by simulating a click on the tab's corresponding UI element. Each tab in Min's UI is represented by a `div` with the class `tab-item` and a `data-tab` attribute set to the tab's unique ID. By using Playwright's `appWindow.click(`.tab-item[data-tab="${tabId}"]`)`, the application's native tab-switching mechanism was engaged, ensuring all associated side-effects (like updating the active webview) occurred correctly.
+
+**4. Handling Tab Lifecycle and State Management:**
+
+   A recurring challenge was the dynamic nature of tab IDs, particularly when empty tabs were automatically destroyed upon new tab creation or navigation. This led to `initialTabId` becoming invalid and Playwright timing out when trying to find non-existent elements.
+
+   *Solution:* The test script was refined to capture the `initialTabId` *before* any navigation or new tab creation that might invalidate it. Furthermore, the initial tab was explicitly navigated to a non-empty URL (e.g., `https://example.com`) using the searchbar method. This ensured the initial tab persisted and its ID remained valid for subsequent switching operations.
+
+**Summary of Programmatic Capabilities:**
+
+*   **Full Tab and Task Overview:** Reliable retrieval of a detailed JSON object representing all open tabs and their task groupings, including URLs, titles, and selection status, via `window.tasks.getCopyableState()`.
+*   **Programmatic Navigation:** Ability to navigate any active tab to a specified URL by simulating user input into the searchbar.
+*   **Programmatic Tab Switching:** Ability to switch between existing tabs by simulating clicks on their UI elements.
+
+This comprehensive approach, combining direct state access with robust user input simulation where necessary, provides a powerful foundation for building advanced autonomous browsing features and thorough end-to-end testing within the Min browser.
+
+**Test Script (`playwright_test.js`):**
+
+The provided `playwright_test.js` script demonstrates these capabilities. It launches the Electron application, navigates an initial tab to `https://example.com`, creates a new tab, navigates it to `https://www.google.com`, retrieves the updated tab state, and then switches back to the original tab. This script serves as a robust foundation for developing further end-to-end tests and autonomous browsing features.
+
+To run the tests, use the following command:
+```
+node playwright_test.js
+```
+
 ### Build & Deploy
 - GitHub Actions for CI/CD
 - DMG notarization

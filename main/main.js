@@ -355,6 +355,7 @@ function createWindowWithBounds (bounds, customArgs) {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 app.on('ready', function () {
+  app.commandLine.appendSwitch('remote-debugging-port', '9222')
   settings.set('restartNow', false)
   appIsReady = true
 
@@ -482,6 +483,10 @@ ipc.on('request-tab-state', function(e) {
   })
   getWindowWebContents(otherWindow).send('read-tab-state')
 })
+
+ipc.handle('get-all-tabs-data', () => {
+  return tasks.getCopyableState();
+});
 
 /* places service */
 
